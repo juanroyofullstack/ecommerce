@@ -1,4 +1,4 @@
-import { ApiUrl } from './constants';
+import { ApiUrl } from "./constants";
 
 interface Product {
   id: number;
@@ -19,7 +19,7 @@ class ProductService {
       }
       return await response.json();
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
       throw error;
     }
   }
@@ -32,7 +32,7 @@ class ProductService {
       }
       return await response.json();
     } catch (error) {
-      console.error('Error fetching product:', error);
+      console.error("Error fetching product:", error);
       throw error;
     }
   }

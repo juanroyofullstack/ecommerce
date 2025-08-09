@@ -1,6 +1,6 @@
 import { ApiUrl } from "./constants";
 
-interface Product {
+export interface Product {
   id: number;
   title: string;
   price: number;
@@ -9,15 +9,21 @@ interface Product {
   image: string;
 }
 
-class ProductService {
+interface fetchProductsResponse {
+  status: number;
+  data: Product[];
+}
 
-  async getProducts(): Promise<Product[]> {
+class ProductService {
+  async getProducts(): Promise<fetchProductsResponse> {
     try {
       const response = await fetch(`${ApiUrl}/products`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      return await response.json();
+
+      const data = await response.json();
+      return { status: response.status, data: data };
     } catch (error) {
       console.error("Error fetching products:", error);
       throw error;

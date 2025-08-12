@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ShoppingCart, LocalShipping } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+
+import OfferImage from "./OfferImage";
 
 interface Offer {
   id: number;
@@ -17,7 +19,7 @@ const offers: Offer[] = [
     title: "¡Oferta Especial!",
     description: "Hasta 50% de descuento en productos seleccionados",
     discount: "50%",
-    image: "/images/offer1.jpg",
+    image: "/megaphone-with-banner-tag-sign-exclusive-offer-flat-illustration-vector.jpg",
     buttonText: "Comprar Ahora",
     backgroundColor: "bg-gradient-to-r from-red-500 to-pink-500",
   },
@@ -26,7 +28,7 @@ const offers: Offer[] = [
     title: "Envío Gratis",
     description: "En compras superiores a $50",
     discount: "GRATIS",
-    image: "/images/offer2.jpg",
+    image: "/oferta-venta-etiqueta-banner-oferta-descuento-promocion_157027-1250.avif",
     buttonText: "Ver Productos",
     backgroundColor: "bg-gradient-to-r from-blue-500 to-purple-500",
   },
@@ -35,7 +37,7 @@ const offers: Offer[] = [
     title: "Nueva Colección",
     description: "Descubre las últimas tendencias",
     discount: "30%",
-    image: "/images/offer3.jpg",
+    image: "/oferta-venta-etiqueta-banner-oferta-descuento-promocion_157027-1250.avif",
     buttonText: "Explorar",
     backgroundColor: "bg-gradient-to-r from-green-500 to-teal-500",
   },
@@ -68,7 +70,8 @@ const OffersCarousel = () => {
                 index < currentSlide ? "-translate-x-full" : "translate-x-full"
             }`}
           >
-            <div className={`h-full ${offer.backgroundColor} flex items-center justify-between px-8 md:px-16`}>
+            <div className={`h-full ${offer.backgroundColor} flex items-center 
+            justify-between px-8 md:px-16`}>
               <div className="text-white max-w-lg">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">{offer.title}</h2>
                 <p className="text-lg md:text-xl mb-6 opacity-90">{offer.description}</p>
@@ -76,29 +79,24 @@ const OffersCarousel = () => {
                   <span className="text-5xl md:text-6xl font-bold text-yellow-300">
                     {offer.discount}
                   </span>
-                  <button className="bg-white text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                  <button className="bg-white text-gray-800 px-6 py-3 rounded-lg
+                  font-semibold hover:bg-gray-100 transition-colors">
                     {offer.buttonText}
                   </button>
                 </div>
               </div>
               <div className="hidden md:block">
-                <img
-                  src={offer.image}
-                  alt={offer.title}
-                  className="w-64 h-64 object-cover rounded-lg shadow-xl"
-                  onError={(e) => {
-                    e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjggODBMMTc2IDEyOEgxMjhIMTI4VjgwWiIgZmlsbD0iIzlDQTNBRiIvPgo8L3N2Zz4K";
-                  }}
-                />
+                <OfferImage src={offer.image} alt={offer.title} />
               </div>
             </div>
           </div>
         ))}
       </div>
-      {/* Controles de navegación */}
+
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80
+        hover:bg-white p-2 rounded-full shadow-lg transition-all"
         aria-label="Oferta anterior"
       >
         <ChevronLeft className="w-6 h-6 text-gray-800" />
@@ -106,7 +104,8 @@ const OffersCarousel = () => {
 
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80
+        hover:bg-white p-2 rounded-full shadow-lg transition-all"
         aria-label="Siguiente oferta"
       >
         <ChevronRight className="w-6 h-6 text-gray-800" />

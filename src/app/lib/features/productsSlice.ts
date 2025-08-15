@@ -17,22 +17,12 @@ const initialState: ProductsState = {
 
 export const fetchProducts = createAsyncThunk<Product[]>(
   "dataFetch/Products",
-  async (_, { dispatch }) => {
+  async () => {
     try {
-      dispatch(fetchProductsStart());
       const response = await productService.getProducts();
-
-      dispatch(fetchProductsSuccess(response.data));
-
       return response.data;
     } catch (error: unknown) {
-      let errorMessage = "An unknown error occurred";
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      dispatch(fetchProductsFailure(errorMessage));
-
-      return [];
+      throw error;
     }
   }
 );
@@ -41,18 +31,6 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    fetchProductsStart(state) {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchProductsSuccess(state, action: PayloadAction<Product[]>) {
-      state.items = action.payload;
-      state.loading = false;
-    },
-    fetchProductsFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
-      state.error = action.payload;
-    },
     addProduct(state, action: PayloadAction<Product>) {
       state.items.push(action.payload);
     },
@@ -66,12 +44,24 @@ const productsSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        state.items = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch products";
+      });
+  },
 });
 
 export const {
-  fetchProductsStart,
-  fetchProductsSuccess,
-  fetchProductsFailure,
   addProduct,
   removeProduct,
   updateProduct,

@@ -10,6 +10,7 @@ import type { AppDispatch } from "./store";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);

@@ -8,18 +8,15 @@ const Header: React.FC = () => {
     <AppBar position="sticky" className="bg-white shadow-md top-0 z-50">
       <Toolbar className="flex justify-between items-center">
         <Typography variant="h6" className="text-gray-800 font-bold">
-        Mi Ecommerce
+          Mi Ecommerce
         </Typography>
         <SearchBar />
         <div>
           <Button color="inherit" className="text-gray-800 hover:text-blue-600">
-        Inicio
+            Inicio
           </Button>
           <Button color="inherit" className="text-gray-800 hover:text-blue-600">
-        Productos
-          </Button>
-          <Button color="inherit" className="text-gray-800 hover:text-blue-600">
-        Contacto
+            Contacto
           </Button>
         </div>
       </Toolbar>

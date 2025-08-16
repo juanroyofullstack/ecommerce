@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import { productService } from "../../api/ProductsService";
 import type { Product } from "../../api/ProductsService";
+import type { RootState } from "../../store";
 
 interface ProductsState {
     items: Product[];
@@ -15,11 +16,18 @@ const initialState: ProductsState = {
   error: null,
 };
 
-export const fetchProducts = createAsyncThunk<Product[]>(
+export const searchProducts =
+createAsyncThunk<
+  Product[],
+  void,
+  { state: RootState }
+>(
   "dataFetch/Products",
-  async () => {
+  async (_, thunkAPI) => {
     try {
-      const response = await productService.getProducts();
+      const state = thunkAPI.getState() as RootState;
+      const query = state.search.query;
+      const response = await productService.getProductsByQuery(query);
       return response.data;
     } catch (error: unknown) {
       throw error;
@@ -46,15 +54,15 @@ const productsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      .addCase(searchProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+      .addCase(searchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
         state.items = action.payload;
         state.loading = false;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
+      .addCase(searchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products";
       });

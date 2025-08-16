@@ -1,30 +1,32 @@
 "use client";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { setQuery } from "../lib/features/searchSlice";
+import type { RootState } from "../store";
 import "./SearchBar.scss";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const query = useSelector((state: RootState) => state.search.query);
 
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const query = formData.get("search") as string;
-
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
     dispatch(setQuery(query));
+  };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     router.push(`/search?query=${encodeURIComponent(query)}`);
   };
 
   return (
     <form className="SearchBar flex items-center bg-white shadow-md rounded-full"
-      onSubmit={handleSearch}>
+      onSubmit={handleSubmit}>
       <input name="search" type="text" placeholder="Search..." className="SearchBar__input
-        text-black rounded-full" />
+        text-black rounded-full" value={query} onChange={handleSearch} />
     </form>
   );
 };

@@ -5,13 +5,13 @@ import type { Product } from "../../api/ProductsService";
 import type { RootState } from "../../store";
 
 interface ProductsState {
-    items: Product[];
+    items: { products: Product[] };
     loading: boolean;
     error: string | null;
 }
 
 const initialState: ProductsState = {
-  items: [],
+  items: { products: [] },
   loading: false,
   error: null,
 };

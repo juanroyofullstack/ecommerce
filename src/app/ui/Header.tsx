@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 import SearchBar from "../components/SearchBar";
@@ -12,10 +13,12 @@ const Header: React.FC = () => {
         </Typography>
         <SearchBar />
         <div>
-          <Button color="inherit" className="text-gray-800 hover:text-blue-600">
+          <Button color="inherit" component={Link} href="/"
+            className="text-gray-800 hover:text-blue-600">
             Inicio
           </Button>
-          <Button color="inherit" className="text-gray-800 hover:text-blue-600">
+          <Button color="inherit" component={Link} href="/contacto"
+            className="text-gray-800 hover:text-blue-600">
             Contacto
           </Button>
         </div>

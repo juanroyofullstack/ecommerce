@@ -9,7 +9,7 @@ import type { RootState } from "../store";
 import { AppDispatch } from "../store";
 
 export default function SearchPage() {
-  const products = useSelector((state: RootState) => state.products.items["products"]);
+  const products = useSelector((state: RootState) => state.products.data["products"]);
   const query = useSelector((state: RootState) => state.search.query);
 
   const dispatch = useDispatch<AppDispatch>();

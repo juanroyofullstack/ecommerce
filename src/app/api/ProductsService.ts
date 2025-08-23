@@ -45,9 +45,16 @@ export interface Product {
   thumbnail: string;
 }
 
+export interface dataResponse {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 interface fetchProductsResponse {
   status: number;
-  data: Product[];
+  data: dataResponse;
 }
 
 class ProductService {

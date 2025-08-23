@@ -26,7 +26,12 @@ const SearchBar = () => {
     <form className="SearchBar flex items-center bg-white shadow-md rounded-full"
       onSubmit={handleSubmit}>
       <input name="search" type="text" placeholder="Search..." className="SearchBar__input
-        text-black rounded-full" value={query} onChange={handleSearch} />
+        text-black rounded-full" value={query} onChange={handleSearch} onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+        }
+      }}/>
     </form>
   );
 };

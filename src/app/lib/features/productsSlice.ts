@@ -1,24 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import { productService } from "../../api/ProductsService";
-import type { Product } from "../../api/ProductsService";
+import type { Product, dataResponse } from "../../api/ProductsService";
 import type { RootState } from "../../store";
 
 interface ProductsState {
-    items: { products: Product[] };
+    data: dataResponse;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: ProductsState = {
-  items: { products: [] },
+  data: { products: [], total: 0, skip: 0, limit: 0 },
   loading: false,
   error: null,
 };
 
 export const searchProducts =
 createAsyncThunk<
-  Product[],
+  dataResponse,
   void,
   { state: RootState }
 >(
@@ -40,15 +40,15 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     addProduct(state, action: PayloadAction<Product>) {
-      state.items.push(action.payload);
+      state.data.products.push(action.payload);
     },
     removeProduct(state, action: PayloadAction<number>) {
-      state.items = state.items.filter(product => product.id !== action.payload);
+      state.data.products = state.data.products.filter(product => product.id !== action.payload);
     },
     updateProduct(state, action: PayloadAction<Product>) {
-      const index = state.items.findIndex(p => p.id === action.payload.id);
+      const index = state.data.products.findIndex(p => p.id === action.payload.id);
       if (index !== -1) {
-        state.items[index] = action.payload;
+        state.data.products[index] = action.payload;
       }
     },
   },
@@ -58,8 +58,8 @@ const productsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(searchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
-        state.items = action.payload;
+      .addCase(searchProducts.fulfilled, (state, action: PayloadAction<dataResponse>) => {
+        state.data = action.payload;
         state.loading = false;
       })
       .addCase(searchProducts.rejected, (state, action) => {

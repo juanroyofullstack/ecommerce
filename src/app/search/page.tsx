@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Image from "next/image";
 
 import { searchProducts } from "../lib/features/productsSlice";
 import type { RootState } from "../store";
@@ -18,33 +19,22 @@ export default function SearchPage() {
   }, [dispatch, query]);
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="pt-8">
       <div>
         {products.length === 0 ? (
           <p>No hay productos para mostrar.</p>
         ) : (
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: "1.5rem",
-            marginTop: "1rem",
-          }}>
+          <div className="ProductGrid grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))]
+          gap-6 mt-4">
             {products.map((product) => (
-              <div key={product.id} style={{
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
-                padding: "1rem",
-                backgroundColor: "#fff",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                transition: "transform 0.2s",
-                cursor: "pointer",
-              }}>
-                <img
-                  src={product.image}
+              <div key={product.id} className="ProductCard cursor-pointer p-4 border border-gray-200
+              rounded-lg bg-white shadow-sm hover:shadow-md hover:scale-[1.02]">
+                <Image
+                  src={product.images[0]}
                   alt={product.title}
+                  width={250}
+                  height={200}
                   style={{
-                    width: "100%",
-                    height: "200px",
                     objectFit: "cover",
                     borderRadius: "4px",
                     marginBottom: "0.5rem",

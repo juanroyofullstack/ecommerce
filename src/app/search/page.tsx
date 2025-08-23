@@ -24,36 +24,23 @@ export default function SearchPage() {
         {products.length === 0 ? (
           <p>No hay productos para mostrar.</p>
         ) : (
-          <div className="ProductGrid grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))]
-          gap-6 mt-4">
+          <div className="ProductGrid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+          xl:grid-cols-5 gap-6 p-4">
             {products.map((product) => (
-              <div key={product.id} className="ProductCard cursor-pointer p-4 border border-gray-200
-              rounded-lg bg-white shadow-sm hover:shadow-md hover:scale-[1.02]">
+              <div
+                key={product.id}
+                className="ProductCard cursor-pointer p-4 border border-gray-200 rounded-lg bg-white
+                shadow-sm hover:shadow-md hover:scale-105 transition-transform"
+              >
                 <Image
                   src={product.images[0]}
                   alt={product.title}
                   width={250}
                   height={200}
-                  style={{
-                    objectFit: "cover",
-                    borderRadius: "4px",
-                    marginBottom: "0.5rem",
-                  }}
+                  className="mb-2 rounded object-cover"
                 />
-                <h3 style={{
-                  fontSize: "1.1rem",
-                  marginBottom: "0.5rem",
-                  color: "#333",
-                }}>
-                  {product.title}
-                </h3>
-                <p style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "bold",
-                  color: "#007bff",
-                }}>
-                ${product.price}
-                </p>
+                <h3 className="text-[1.1rem] mb-2 text-gray-800">{product.title}</h3>
+                <p className="text-[1.2rem] font-bold text-blue-600">${product.price}</p>
               </div>
             ))}
           </div>

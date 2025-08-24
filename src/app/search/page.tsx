@@ -10,6 +10,8 @@ import { AppDispatch } from "../store";
 
 export default function SearchPage() {
   const products = useSelector((state: RootState) => state.products.data["products"]);
+  const callStatus = useSelector((state: RootState) => state.products.loading);
+
   const query = useSelector((state: RootState) => state.search.query);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +23,7 @@ export default function SearchPage() {
   return (
     <div className="pt-8">
       <div>
-        {products.length === 0 ? (
+        {products.length === 0 && !callStatus ? (
           <p>No hay productos para mostrar.</p>
         ) : (
           <div className="ProductGrid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4

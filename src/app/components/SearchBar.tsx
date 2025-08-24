@@ -1,37 +1,53 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { setQuery } from "../lib/features/searchSlice";
+import { useUrlSync } from "../hooks";
 import type { RootState } from "../store";
 import "./SearchBar.scss";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const query = useSelector((state: RootState) => state.search.query);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    dispatch(setQuery(query));
-  };
+  useUrlSync();
+
+  const currentQuery = useSelector((state: RootState) => state.search.query);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const query =
+      inputRef.current?.value ??
+      ((event.target as HTMLFormElement).search.value || "");
+
+    dispatch(setQuery(query));
     router.push(`/search?query=${encodeURIComponent(query)}`);
   };
+
+  useEffect(() => {
+    if (inputRef.current && currentQuery !== inputRef.current.value) {
+      inputRef.current.value = currentQuery;
+    }
+  }, [currentQuery]);
 
   return (
     <form className="SearchBar flex items-center bg-white shadow-md rounded-full"
       onSubmit={handleSubmit}>
-      <input name="search" type="text" placeholder="Search..." className="SearchBar__input
-        text-black rounded-full" value={query} onChange={handleSearch} onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
-        }
-      }}/>
+      <input
+        ref={inputRef}
+        name="search" type="text"
+        placeholder="Search..."
+        className="SearchBar__input text-black rounded-full"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+          }
+        }}/>
     </form>
   );
 };

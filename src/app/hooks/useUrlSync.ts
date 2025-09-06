@@ -12,7 +12,7 @@ export const useUrlSync = () => {
 
   useEffect(() => {
     const query = searchParams.get("query") || "";
-    if (query) {
+    if (query || query === "") {
       dispatch(setQuery(query));
     }
   }, [searchParams, dispatch]);

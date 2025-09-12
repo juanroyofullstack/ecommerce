@@ -25,7 +25,7 @@ const SearchBar = () => {
       ((event.target as HTMLFormElement).search.value || "");
 
     dispatch(setQuery(query));
-    router.push(`/search?query=${encodeURIComponent(query)}`);
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
   useEffect(() => {

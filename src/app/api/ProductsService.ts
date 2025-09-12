@@ -88,6 +88,25 @@ class ProductService {
     }
   }
 
+  async getProductsByQueryAndFilters(query: string, filters?: Record<string, string>):
+  Promise<fetchProductsResponse> {
+    try {
+      const filterString = new URLSearchParams(filters).toString();
+      const response = await fetch(`${ApiUrl}/products/search?q=${query}${filterString ?
+        `&${filterString}` : ""}`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return { status: response.status, data: data };
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  }
+
   async getProductById(id: number): Promise<Product | null> {
     try {
       const response = await fetch(`${ApiUrl}/products/${id}`);

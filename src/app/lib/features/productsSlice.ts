@@ -27,7 +27,12 @@ createAsyncThunk<
     try {
       const state = thunkAPI.getState() as RootState;
       const query = state.search.query;
-      const response = await productService.getProductsByQuery(query);
+      const sortby = state.search.sortby && state.search.sortby !== "Best Match"
+        ? { sortBy: "title", order: state.search.sortby } : undefined;
+
+      const filters = { ...sortby };
+
+      const response = await productService.getProductsByQueryAndFilters(query, filters);
       return response.data;
     } catch (error: unknown) {
       throw error;

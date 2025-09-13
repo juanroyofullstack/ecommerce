@@ -4,20 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import { setSortBy, SortByOptions } from "../lib/features/searchSlice";
+import { updateSearchParams } from "../utils/navigation_utils";
 import type { RootState } from "../store";
 
 const SelectSortBy = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const dispatch = useDispatch();
   const sortBy = useSelector((state: RootState) => state.search.sortby);
+
+  const dispatch = useDispatch();
 
   const onChangeSortOption = (option: SortByOptions) => {
     dispatch(setSortBy(option));
     const params = new URLSearchParams(searchParams.toString());
+    updateSearchParams(params, { sortby: "title", order: option });
 
-    params.set("sortBy", "title");
-    params.set("order", option);
     router.push(`/search?${params.toString()}`);
   };
 

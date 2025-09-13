@@ -40,6 +40,23 @@ createAsyncThunk<
   }
 );
 
+export const searchAllProducts =
+createAsyncThunk<
+  dataResponse,
+  void,
+  { state: RootState }
+>(
+  "dataFetch/AllProducts",
+  async () => {
+    try {
+      const response = await productService.getAllProducts();
+      return response.data;
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: "products",
   initialState,
@@ -68,6 +85,19 @@ const productsSlice = createSlice({
         state.loading = false;
       })
       .addCase(searchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch products";
+      });
+
+    builder.addCase(searchAllProducts.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+      .addCase(searchAllProducts.fulfilled, (state, action: PayloadAction<dataResponse>) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(searchAllProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch products";
       });

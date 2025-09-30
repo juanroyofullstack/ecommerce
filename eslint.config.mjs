@@ -19,6 +19,7 @@ eslintConfig.push({
   rules: {
     "react/react-in-jsx-scope": "off",
     "@next/next/no-img-element": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "no-console": "warn",
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "error",

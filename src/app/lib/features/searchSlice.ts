@@ -9,11 +9,13 @@ export enum SortByOptions {
 interface SearchState {
     query: string;
     sortby: SortByOptions | "";
+    page: number;
 }
 
 const initialState: SearchState = {
   query: "",
   sortby: "",
+  page: 1,
 };
 
 const searchSlice = createSlice({
@@ -32,9 +34,12 @@ const searchSlice = createSlice({
     clearSortBy(state) {
       state.sortby = SortByOptions.BEST_MATCH;
     },
+    setPage(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
   },
 });
 
-export const { setQuery, clearQuery, setSortBy, clearSortBy } = searchSlice.actions;
+export const { setQuery, clearQuery, setSortBy, clearSortBy, setPage } = searchSlice.actions;
 
 export default searchSlice.reducer;

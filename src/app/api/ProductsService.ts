@@ -1,4 +1,4 @@
-import { ApiUrl } from "./constants";
+import { ApiUrl, PRODUCTS_PAGE_LIMIT } from "./constants";
 
 interface Dimensions {
   width: number;
@@ -58,9 +58,11 @@ interface fetchProductsResponse {
 }
 
 class ProductService {
-  async getAllProducts(): Promise<fetchProductsResponse> {
+  async getAllProducts(page?: number): Promise<fetchProductsResponse> {
     try {
-      const response = await fetch(`${ApiUrl}/products`);
+      const paramsPage = page && page > 1 ? `&skip=${(page - 1) * PRODUCTS_PAGE_LIMIT}` : "";
+      const response = await fetch(`${ApiUrl}/products?limit=${PRODUCTS_PAGE_LIMIT}${paramsPage}`);
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -88,7 +90,7 @@ class ProductService {
     }
   }
 
-  async getProductsByQueryAndFilters(query: string, filters?: Record<string, string>):
+  async getProductsByQueryAndFilters(query: string, filters?: Record<string, any>):
   Promise<fetchProductsResponse> {
     try {
       const filterString = new URLSearchParams(filters).toString();

@@ -47,9 +47,12 @@ createAsyncThunk<
   { state: RootState }
 >(
   "dataFetch/AllProducts",
-  async () => {
+  async (_, thunkAPI) => {
     try {
-      const response = await productService.getAllProducts();
+      const state = thunkAPI.getState() as RootState;
+      const page = state.search.page;
+
+      const response = await productService.getAllProducts(page);
       return response.data;
     } catch (error: unknown) {
       throw error;

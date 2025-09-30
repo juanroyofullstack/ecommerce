@@ -3,6 +3,7 @@ import { CircularProgress } from "@mui/material";
 
 import ProductCard from "../components/ProductCard";
 import SelectSortBy from "../components/SelectSortBy";
+import CustomPagination from "../components/Pagination";
 import type { RootState } from "../store";
 
 const ProductGrid = () => {
@@ -35,6 +36,7 @@ const ProductGrid = () => {
           </>
         )
       )}
+      <CustomPagination />
     </div>
   );
 };

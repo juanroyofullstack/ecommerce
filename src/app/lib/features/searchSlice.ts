@@ -6,7 +6,7 @@ export enum SortByOptions {
   TITLE_DESC = "desc",
 }
 
-interface SearchState {
+export interface SearchState {
     query: string;
     sortby: SortByOptions | "";
     page: number;

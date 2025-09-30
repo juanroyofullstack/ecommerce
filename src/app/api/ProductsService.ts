@@ -1,4 +1,6 @@
-import { ApiUrl, PRODUCTS_PAGE_LIMIT } from "./constants";
+import { mapFiltersToApiParams } from "../utils/navigation_utils";
+
+import { ApiUrl } from "./constants";
 
 interface Dimensions {
   width: number;
@@ -60,8 +62,9 @@ interface fetchProductsResponse {
 class ProductService {
   async getAllProducts(page?: number): Promise<fetchProductsResponse> {
     try {
-      const paramsPage = page && page > 1 ? `&skip=${(page - 1) * PRODUCTS_PAGE_LIMIT}` : "";
-      const response = await fetch(`${ApiUrl}/products?limit=${PRODUCTS_PAGE_LIMIT}${paramsPage}`);
+      const apiParams = mapFiltersToApiParams({ page });
+      const response = await fetch(`${ApiUrl}/products${apiParams ?
+        `?${apiParams}` : ""}`);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -75,27 +78,13 @@ class ProductService {
     }
   }
 
-  async getProductsByQuery(query: string): Promise<fetchProductsResponse> {
-    try {
-      const response = await fetch(`${ApiUrl}/products/search?q=${query}`);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return { status: response.status, data: data };
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      throw error;
-    }
-  }
-
-  async getProductsByQueryAndFilters(query: string, filters?: Record<string, any>):
+  async getProductsByQueryAndFilters({ query, filters = {} }:
+    {query: string, filters: Record<string, any>}):
   Promise<fetchProductsResponse> {
     try {
-      const filterString = new URLSearchParams(filters).toString();
-      const response = await fetch(`${ApiUrl}/products/search?q=${query}${filterString ?
-        `&${filterString}` : ""}`);
+      const apiParams = mapFiltersToApiParams(filters);
+      const response = await fetch(`${ApiUrl}/products/search?q=${query}${apiParams ?
+        `&${apiParams}` : ""}`);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);

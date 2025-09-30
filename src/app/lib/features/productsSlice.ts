@@ -29,10 +29,11 @@ createAsyncThunk<
       const query = state.search.query;
       const sortby = state.search.sortby && state.search.sortby !== "Best Match"
         ? { sortBy: "title", order: state.search.sortby } : undefined;
+      const page = state.search.page;
 
-      const filters = { ...sortby };
+      const filters = { ...sortby, page };
 
-      const response = await productService.getProductsByQueryAndFilters(query, filters);
+      const response = await productService.getProductsByQueryAndFilters({ query, filters });
       return response.data;
     } catch (error: unknown) {
       throw error;

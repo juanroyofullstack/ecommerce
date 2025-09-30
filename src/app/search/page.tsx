@@ -11,12 +11,13 @@ import { AppDispatch } from "../store";
 export default function SearchPage() {
   const query = useSelector((state: RootState) => state.search.query);
   const sortBy = useSelector((state: RootState) => state.search.sortby);
+  const page = useSelector((state: RootState) => state.search.page);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(searchProducts());
-  }, [dispatch, query, sortBy]);
+  }, [dispatch, query, sortBy, page]);
 
   return (
     <div className="Search pt-8">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./ui/Header";
 import { Providers } from "./providers";
 import "./globals.css";
@@ -34,7 +35,9 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <Providers>
             <Header />
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </Providers>
         </AppRouterCacheProvider>
       </body>

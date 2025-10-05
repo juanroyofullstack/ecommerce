@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import Image from "next/image";
 
 import { Product } from "@/app/api/ProductsService";
@@ -20,4 +21,4 @@ const ProductCard = ({ product }: { product: Product }) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

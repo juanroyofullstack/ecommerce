@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { setQuery } from "../lib/features/searchSlice";
 import { useUrlSync } from "../hooks";
@@ -24,6 +25,8 @@ const SearchBar = () => {
       inputRef.current?.value ??
       ((event.target as HTMLFormElement).search.value || "");
 
+    if(query === currentQuery) return;
+
     dispatch(setQuery(query));
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
@@ -35,7 +38,7 @@ const SearchBar = () => {
   }, [currentQuery]);
 
   return (
-    <form className="SearchBar flex items-center bg-white shadow-md rounded-full"
+    <form className="SearchBar flex items-center bg-white shadow-md rounded-full relative"
       onSubmit={handleSubmit}>
       <input
         ref={inputRef}
@@ -48,6 +51,16 @@ const SearchBar = () => {
             handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
           }
         }}/>
+      <button
+        type="submit"
+        className="MagnifingGlassSearch
+          absolute
+          right-3
+          cursor-pointer"
+        aria-label="Search"
+      >
+        <SearchIcon />
+      </button>
     </form>
   );
 };
